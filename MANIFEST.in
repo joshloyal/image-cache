@@ -1,0 +1,7 @@
+recursive-include image-vis *.py
+
+include requirements.txt
+incluce setup.py
+include README.rst
+include LICENSE
+include MANIFEST.in

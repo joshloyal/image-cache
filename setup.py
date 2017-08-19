@@ -17,15 +17,48 @@ with open('requirements.txt') as f:
     INSTALL_REQUIRES = [l.strip() for l in f.readlines() if l]
 
 
-setup(name='image-cache',
-      version='0.0.1',
-      description='A quick and dirty image cache.',
-      author='Joshua D. Loyal',
-      author_email='joshua.d.loyal@gmail.com',
-      url='https://github.com/joshloyal/image-cache',
-      packages=find_packages(),
-      install_requires=INSTALL_REQUIRES,
-      test_require=['pytest', 'pytest-pep8',
-                    'PIL', 'numpy'],
-      keywords='images',
-      )
+TEST_REQUIRES = [
+    'pytest', 'pytest-pep8', 'PIL', 'numpy'
+]
+
+DISTNAME = 'image-cache'
+DESCRIPTION = 'A quick and dirty image cache.'
+with open('README.rst') as f:
+    LONG_DESCRIPTION = f.read()
+
+AUTHOR = 'Joshua D. Loyal'
+AUTHOR_EMAIL = 'joshua.d.loyal@gmail.com'
+MAINTAINER = 'Joshua D. Loyal'
+MAINTAINER_EMAIL = 'joshua.d.loyal@gmail.com'
+URL = 'https://github.com/joshloyal/image-cache'
+LICENSE = 'MIT'
+VERSION = __version__
+
+
+def setup_package():
+    metadata = dict(name=DISTNAME,
+                    author=AUTHOR,
+                    author_email=AUTHOR_EMAIL,
+                    maintainer=MAINTAINER,
+                    maintainer_email=MAINTAINER_EMAIL,
+                    description=DESCRIPTION,
+                    license=LICENSE,
+                    url=URL,
+                    version=VERSION,
+                    long_description=LONG_DESCRIPTION,
+                    packages=find_packages(),
+                    install_requires=INSTALL_REQUIRES,
+                    test_requires=TEST_REQUIRES,
+                    keywords='images',
+                    classifiers=[
+                        "Intended Audience :: Developers",
+                        "Intended Audience :: Science/Research",
+                        "License :: OSI Approved :: MIT License",
+                        "Operating System :: POSIX :: Linux",
+                        "Operating System :: MacOS :: MacOS X",
+                        "Programming Language :: Python :: 3.6"])
+    setup(**metadata)
+
+
+if __name__ == "__main__":
+    setup_package()
