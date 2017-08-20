@@ -55,6 +55,22 @@ def test_batch_update(CacheClass, rgb_image_data):
     image_cache.InMemoryImageCache,
     image_cache.ImageCache
     ])
+def test_iteration(CacheClass, rgb_image_data):
+    image_dir, image_list = rgb_image_data
+
+    cache = CacheClass(image_dir=image_dir)
+
+    cache.batch_update(image_list, list(range(len(image_list))))
+
+    expected = [cache.hash_image(image) for image in image_list]
+    for idx, image_hash in enumerate(cache):
+        assert image_hash in expected
+
+
+@pytest.mark.parametrize('CacheClass', [
+    image_cache.InMemoryImageCache,
+    image_cache.ImageCache
+    ])
 def test_batch_update_array(CacheClass, rgb_image_data):
     image_dir, image_list = rgb_image_data
 
@@ -64,6 +80,25 @@ def test_batch_update_array(CacheClass, rgb_image_data):
     cache.batch_update(image_list, result)
     for idx, image_file in enumerate(image_list):
         cache[image_file] = np.repeat(idx, 10)
+
+
+@pytest.mark.parametrize('CacheClass', [
+    image_cache.InMemoryImageCache,
+    image_cache.ImageCache
+    ])
+def test_delete_item(CacheClass, rgb_image_data):
+    image_dir, image_list = rgb_image_data
+
+    cache = CacheClass(image_dir=image_dir)
+
+    for idx, image_file in enumerate(image_list):
+        cache[image_file] = idx
+
+    assert len(cache) == len(image_list)
+
+    del cache[image_list[0]]
+
+    assert image_list[0] not in cache
 
 
 @pytest.mark.parametrize('CacheClass', [

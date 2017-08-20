@@ -8,7 +8,6 @@ import chest
 import joblib
 
 
-
 __all__ = ['BaseImageCache', 'ImageCache', 'InMemoryImageCache']
 
 
@@ -82,6 +81,16 @@ class BaseImageCache(metaclass=abc.ABCMeta):
         if image_hash in self.cache:
             return self.cache[image_hash]
         raise KeyError('Image not in cache.')
+
+    def __contains__(self, image_file):
+        return self.hash_image(image_file) in self.cache
+
+    def __iter__(self):
+        return self.cache.__iter__()
+
+    def __delitem__(self, image_file):
+        image_hash = self.hash_image(image_file)
+        del self.cache[image_hash]
 
 
 class ImageCache(BaseImageCache):
