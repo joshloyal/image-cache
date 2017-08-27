@@ -40,6 +40,25 @@ def image_list(img_w, img_h):
 
 
 @pytest.fixture(scope='session')
+def rgb_images(image_list):
+    return image_list[0]
+
+
+@pytest.fixture(scope='session')
+def gray_images(image_list):
+    return image_list[1]
+
+
+@pytest.fixture(scope='session')
+def rgb_image_array(rgb_images):
+    return np.vstack([np.asarray(img, dtype=np.uint8) for img in rgb_images])
+
+@pytest.fixture(scope='session')
+def gray_image_array(gray_images):
+    return np.vstack([np.asarray(img, dtype=np.uint8) for img in gray_images])
+
+
+@pytest.fixture(scope='session')
 def rgb_image_data(tmpdir_factory, image_list):
     temp_dir = tmpdir_factory.mktemp('data')
     image_paths = []

@@ -8,7 +8,7 @@ import chest
 import joblib
 
 
-__all__ = ['BaseImageCache', 'ImageCache', 'InMemoryImageCache']
+__all__ = ['BaseImageCache', 'ImageCache', 'InMemoryImageCache', 'NumpyCache']
 
 
 def hash_image(image_dir, file_path):
@@ -16,6 +16,10 @@ def hash_image(image_dir, file_path):
     the binary image on disk."""
     with open(os.path.join(image_dir, file_path), 'rb') as image:
         return hashlib.md5(image.read()).hexdigest()
+
+
+def hash_array(image):
+    return joblib.hashing.hash(image)
 
 
 class BaseImageCache(metaclass=abc.ABCMeta):
@@ -122,3 +126,11 @@ class InMemoryImageCache(BaseImageCache):
 
     def clear(self):
         self.cache.clear()
+
+
+class NumpyCache(ImageCache):
+    """Cache numpy arrays. Uses joblibs hashing method."""
+    def hash_image(self, image):
+        """Image hash function. Default uses the md5 checksum of the binary
+        image read from disk."""
+        return hash_array(image)
