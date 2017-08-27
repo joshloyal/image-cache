@@ -40,12 +40,12 @@ def test_file_does_not_exist(CacheClass):
     image_cache.InMemoryImageCache,
     image_cache.ImageCache
     ])
-def test_batch_update(CacheClass, rgb_image_data):
+def test_update(CacheClass, rgb_image_data):
     image_dir, image_list = rgb_image_data
 
     cache = CacheClass(image_dir=image_dir)
 
-    cache.batch_update(image_list, list(range(len(image_list))))
+    cache.update(image_list, list(range(len(image_list))))
 
     for idx, image_file in enumerate(image_list):
         assert cache[image_file] == idx
@@ -60,7 +60,7 @@ def test_iteration(CacheClass, rgb_image_data):
 
     cache = CacheClass(image_dir=image_dir)
 
-    cache.batch_update(image_list, list(range(len(image_list))))
+    cache.update(image_list, list(range(len(image_list))))
 
     expected = [cache.hash_image(image) for image in image_list]
     for idx, image_hash in enumerate(cache):
@@ -71,13 +71,13 @@ def test_iteration(CacheClass, rgb_image_data):
     image_cache.InMemoryImageCache,
     image_cache.ImageCache
     ])
-def test_batch_update_array(CacheClass, rgb_image_data):
+def test_update_array(CacheClass, rgb_image_data):
     image_dir, image_list = rgb_image_data
 
     cache = CacheClass(image_dir=image_dir)
 
     result = np.tile(np.arange(len(image_list)).reshape(-1, 1), 10)
-    cache.batch_update(image_list, result)
+    cache.update(image_list, result)
     for idx, image_file in enumerate(image_list):
         cache[image_file] = np.repeat(idx, 10)
 

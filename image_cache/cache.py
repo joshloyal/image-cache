@@ -68,7 +68,7 @@ class BaseImageCache(metaclass=abc.ABCMeta):
         image_hash = self.hash_image(image_file)
         self.cache[image_hash] = result
 
-    def batch_update(self, image_files, results):
+    def update(self, image_files, results):
         """Given a list of image files and results update the cache
         in batch."""
         for index, image_file in enumerate(image_files):
